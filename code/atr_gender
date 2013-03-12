@@ -1,0 +1,14 @@
+(lp0
+(lp1
+S'gender'
+p2
+aS'grammatical_gender'
+p3
+aa(lp4
+S'sex'
+p5
+aS'gender'
+p6
+aS'sexuality'
+p7
+aa.
