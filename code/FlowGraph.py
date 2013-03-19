@@ -68,3 +68,32 @@ class FlowNetwork(object):
 
     def get_path(self):
         return self.paths
+
+    #Getting list of  vertices from paths expressed as string
+    def getVertices(self,paths):
+        vertices=[]
+        for path in paths:
+            nodes = path.split('->')
+            for node in nodes:
+                n = node.strip()
+                if n not in vertices:
+                    vertices.append(n)
+
+        return vertices
+    
+    #Getting edges as list of tuples pair (FROM,TO) from paths expressed as string
+    def getEdges(self,paths):
+        edges=[]
+        for path in paths:
+            nodes = path.split('->')
+            for i in range(len(nodes)-1):
+                FROM = nodes[i].strip()
+                TO = nodes[i+1].strip()
+                edge_set = self.get_edges(FROM)
+                for edge in edge_set:
+                    if edge.sink == TO:
+                        edges.append((FROM,TO,edge.capacity))
+                #edges.append((FROM,TO,1))# last element is the weight ,which is 1
+                edges.append((FROM,TO,1))
+        return edges
+

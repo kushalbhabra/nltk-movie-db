@@ -10,6 +10,7 @@ from FlowGraph import *
 def attach(tokenset):
     g=FlowNetwork()
     DG = nx.DiGraph()
+    DG_Maxflow = nx.DiGraph()
     DGedges=[]
 
     
@@ -92,6 +93,16 @@ def attach(tokenset):
     g.set_path('s','t','')
 
     paths=g.get_path()
+    new_vertices = g.getVertices(paths)
+    new_edges= g.getEdges(paths)
+    DG_Maxflow.add_nodes_from(new_vertices)
+    DG_Maxflow.add_weighted_edges_from(new_edges)
+    nx.draw(DG_Maxflow)
+    plotmygraph.savefig('maxflow.png')
+    
+##    print paths
+##    print new_vertices
+##    print new_edges
     ret=[]
     for path in paths:
         elements=path.split(' -> ')
@@ -101,9 +112,9 @@ def attach(tokenset):
                 ret.append(token['use']+'='+value)
     print '\nDG edges',DGedges
     DG.add_weighted_edges_from(DGedges)
-    
     nx.draw(DG)
-    plotmygraph.savefig('maxflow.png')
+    plotmygraph.savefig('digraph.png')
+    
     
     return ret
 
