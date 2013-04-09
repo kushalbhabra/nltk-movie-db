@@ -168,6 +168,19 @@
     <string>Tokens:</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>290</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enlarge</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

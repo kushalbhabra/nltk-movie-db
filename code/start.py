@@ -12,7 +12,13 @@ class TestApp(QtGui.QMainWindow):
         self.ui.show()
         self.connect(self.ui.pushButton, QtCore.SIGNAL('clicked()'), self.execSQL)
         self.connect(self.ui.commandLinkButton, QtCore.SIGNAL('clicked()'), self.getSQL)
+        self.connect(self.ui.pushButton_2, QtCore.SIGNAL('clicked()'), self.popMaxFlow)
         
+    def popMaxFlow(self):
+        self.mui = uic.loadUi('image.ui')
+        self.mui.label.setPixmap(QtGui.QPixmap('maxflow.png'))
+        self.mui.label.setScaledContents(True)
+        self.mui.show()
         
     def execSQL(self):
         
@@ -32,7 +38,7 @@ class TestApp(QtGui.QMainWindow):
         #Executing SQL
         cursor.execute(question)
         rows=cursor.fetchall()        
-
+        self.rui.label_2.setText('Executing SQL: '+question)
         #Appending results to GUI
         for row in rows:
             answer=row

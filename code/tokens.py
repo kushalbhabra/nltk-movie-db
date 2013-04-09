@@ -323,6 +323,10 @@ def formQuery(attach_it,rest):
         for elem in attach_it[:]:
             if key in elem:
                 select = elem.split('=')[0]
+                # Fixing name into first_name+last_name
+                if select in ['director.name','actor.name']:
+                    person = select.split(".")[0]
+                    select= 'CONCAT(%s.first_name, 0x20, %s.last_name)' % (person,person)
                 attach_it.remove(elem)
     for elem in rest[1:]:
         for key in elem.keys():
