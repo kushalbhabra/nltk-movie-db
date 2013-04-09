@@ -7,8 +7,7 @@ class TestApp(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.ui = uic.loadUi('nltk.ui')
-        self.ui.label_2.setPixmap(QtGui.QPixmap('maxflow.png'))
-        self.ui.label_2.setScaledContents(True)
+        
         self.ui.show()
         self.connect(self.ui.pushButton, QtCore.SIGNAL('clicked()'), self.execSQL)
         self.connect(self.ui.commandLinkButton, QtCore.SIGNAL('clicked()'), self.getSQL)
@@ -50,7 +49,8 @@ class TestApp(QtGui.QMainWindow):
         sql_query = convert(question)
         self.ui.SQLEditText.clear()
         self.ui.SQLEditText.insertPlainText(sql_query)
-        
+        self.ui.label_2.setPixmap(QtGui.QPixmap('maxflow.png'))
+        self.ui.label_2.setScaledContents(True)
  
         
 if __name__ == "__main__":

@@ -113,6 +113,7 @@ def attach(tokenset):
     print '\nDG edges',DGedges
     DG.add_weighted_edges_from(DGedges)
     nx.draw(DG)
+    plotmygraph.clf()
     plotmygraph.savefig('digraph.png')
     
     
