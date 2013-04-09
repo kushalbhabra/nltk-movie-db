@@ -46,9 +46,17 @@ class TestApp(QtGui.QMainWindow):
     
     def getSQL(self):
         question  = str(self.ui.queryEditText.toPlainText())
-        sql_query = convert(question)
+        result = convert(question)
+        sql_query= result['query']
+        attach = result['attach']
+        rest = result['rest']
+        
         self.ui.SQLEditText.clear()
         self.ui.SQLEditText.insertPlainText(sql_query)
+        
+        self.ui.tokenEditText.clear()
+        self.ui.tokenEditText.insertPlainText(str(attach)+str(rest))
+        
         self.ui.label_2.setPixmap(QtGui.QPixmap('maxflow.png'))
         self.ui.label_2.setScaledContents(True)
  

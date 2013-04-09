@@ -126,7 +126,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Maxflow</string>
+    <string></string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">

@@ -399,7 +399,9 @@ def convert(question):
     rest=tokenize_rest(woyear)
     attach_it,rest_list = finalize(movie,person,year,rest)
     print '\n Final query' 
-    return formQuery(attach_it,rest_list)
+    return {"query":formQuery(attach_it,rest_list),
+            "attach":attach_it,
+            "rest":rest_list}
 
 def main():
     query = 'Which movies were made in the year 2000?'
