@@ -395,13 +395,13 @@ def convert(question):
     rest=tokenize_rest(woyear)
     attach_it,rest_list = finalize(movie,person,year,rest)
     print '\n Final query' 
-    print formQuery(attach_it,rest_list)
+    return formQuery(attach_it,rest_list)
 
 def main():
-    query = 'which movies were made in 2006'
+    query = 'Which movies were made in the year 2000?'
 ##    query = 'Which movies have James Franco as actor?'
 ##    query = 'who directed movies having James Franco ?'
-##    query = 'Who directed the movie named "the titanic" with James Franco ?'
+    ##query = 'Who directed the movie named "the titanic"?'
     convert(query)
     
 if __name__=="__main__":main()
