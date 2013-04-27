@@ -364,7 +364,7 @@ def formQuery(attach_it,rest):
     print "\n Attribute and Values "
     print attach_it
 
-    query = 'select First(' + select + ') from '
+    query = 'select ' + select + ' from '
     for elem in db:
         if elem == db[-1]:
             query += elem + ' where '
