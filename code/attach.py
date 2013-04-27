@@ -97,6 +97,7 @@ def attach(tokenset):
     new_edges= g.getEdges(paths)
     DG_Maxflow.add_nodes_from(new_vertices)
     DG_Maxflow.add_weighted_edges_from(new_edges)
+    plotmygraph.clf()
     nx.draw(DG_Maxflow)
     plotmygraph.savefig('maxflow.png')
     
@@ -112,8 +113,8 @@ def attach(tokenset):
                 ret.append(token['use']+'='+value)
     print '\nDG edges',DGedges
     DG.add_weighted_edges_from(DGedges)
-    nx.draw(DG)
     plotmygraph.clf()
+    nx.draw(DG)
     plotmygraph.savefig('digraph.png')
     
     

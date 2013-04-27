@@ -364,7 +364,7 @@ def formQuery(attach_it,rest):
     print "\n Attribute and Values "
     print attach_it
 
-    query = 'select ' + select + ' from '
+    query = 'select First(' + select + ') from '
     for elem in db:
         if elem == db[-1]:
             query += elem + ' where '
@@ -372,6 +372,24 @@ def formQuery(attach_it,rest):
             query += elem + ', '
 
     for elem in attach_it:
+        # Hard coding... dangerous but karna padega for time being
+        if ('director.name' in elem) or ('actor.name' in elem):
+            name = elem.split("=")[1]
+            spleet = name.split(" ")
+            if len(spleet)>1:
+                fname = spleet[0]
+                lname = spleet[-1]
+                if 'director' in elem:
+                    elem = " (director.first_name='%s' and director.last_name='%s') " % (fname,lname)
+                elif 'actor' in elem:
+                    elem = " (actor.first_name='%s' and actor.last_name='%s') " % (fname,lname)
+            else :
+                if 'director' in elem:
+                    elem = " (director.first_name='%s' or director.last_name='%s') " % (name,name)
+                elif 'actor' in elem:
+                    elem = " (actor.first_name='%s' or actor.last_name='%s') " % (name,name)
+                
+            
         if elem == attach_it[-1]:
             query += elem + ''
         else:
