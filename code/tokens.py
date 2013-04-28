@@ -444,7 +444,9 @@ def formQuery(attach_it,rest,aggregation):
 
     for elem in attach_it:
         # Hard coding... dangerous but karna padega for time being
+        cont = 1
         if ('director.name' in elem) or ('actor.name' in elem):
+            telem=''
             names = elem.split("=")[1]
             for name in names.split(':'):
                 spleet = name.split(" ")
@@ -452,15 +454,18 @@ def formQuery(attach_it,rest,aggregation):
                     fname = spleet[0]
                     lname = spleet[-1]
                     if 'director' in elem:
-                        elem += " (director.first_name='%s' and director.last_name='%s') " % (fname,lname)
+                        telem += " (director.first_name='%s' and director.last_name='%s') " % (fname,lname)
                     elif 'actor' in elem:
-                        elem += " (actor.first_name='%s' and actor.last_name='%s') " % (fname,lname)
+                        telem += " (actor.first_name='%s' and actor.last_name='%s') " % (fname,lname)
                 else :
                     if 'director' in elem:
-                        elem += " (director.first_name='%s' or director.last_name='%s') " % (name,name)
+                        telem += " (director.first_name='%s' or director.last_name='%s') " % (name,name)
                     elif 'actor' in elem:
-                        elem += " (actor.first_name='%s' or actor.last_name='%s') " % (name,name)
-                
+                        telem += " (actor.first_name='%s' or actor.last_name='%s') " % (name,name)
+                if cont==1:
+                    telem+="and"
+                cont+=1
+            elem = telem
             
         if elem == attach_it[-1]:
             query += elem + ''
