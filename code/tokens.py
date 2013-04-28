@@ -285,23 +285,52 @@ def act_direct(head):
 
 
 def checkwith(head):
+    print head
     values = verify(head)
     if len(values)==2:
         act_pos = 0
         direct_pos = 0
         for word in word_tokens:
-            if word[:2]=='act':
+            if word[:3]=='act':
                 act_pos = word_tokens.index(word)
             if word[:6]=='direct':
                 direct_pos = word_tokens.index(word)
         name_pos = word_tokens.index(head.split()[0])
+        print "Here",act_pos,direct_pos,name_pos
         act_diff = abs(act_pos - name_pos)
         direct_diff = abs(direct_pos - name_pos)
+        if act_pos > name_pos:
+            act_diff = act_diff-1
+        if direct_pos > name_pos:
+            direct_diff = direct_diff-1
+        print "Here", act_diff,direct_diff
         if act_diff < direct_diff:
+            print "1"
             return 'actor'
         elif direct_diff < act_diff:
+            print "2"
             return 'director'
         else:
+            if act_pos < name_pos:
+                start = act_pos
+                end = name_pos
+            else:
+                start = name_pos
+                end = act_pos
+            for iters in range(start,end):
+                if word_tokens[iters]=='and':
+                    print "3"
+                    return 'director'
+            if direct_pos < name_pos:
+                start = direct_pos
+                end = name_pos
+            else:
+                start = name_pos
+                end = direct_pos
+            for iters in range(start,end):
+                if word_tokens[iters]=='and':
+                    print "5"
+                    return 'actor'
             return 'actor'
     else:
         return values[0]
@@ -471,7 +500,8 @@ def main():
 ##    query = 'Which movies have James Franco as actor?'
 ##    query = 'who directed movies having James Franco ?'
 ##    query = 'Who directed the movie named "the titanic"?'
-    query = "Who acted in the movies directed by James Franco ?"
+##    query = 'Who acted in the movies directed by James Franco ?'
+    query = 'Which movie had James Franco as actor and Steven Spliberg as director?'
     a = convert(query)
     print a['query']
     

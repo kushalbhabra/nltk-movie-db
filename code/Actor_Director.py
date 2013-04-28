@@ -31,5 +31,6 @@ def verifyPersonWithDb(p):
         return ret_tokens
     else:
         print "No one in database"
+        return ['actor','director']
 
 verifyPersonWithDb('James Franco')
