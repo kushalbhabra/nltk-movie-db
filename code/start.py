@@ -27,7 +27,6 @@ class TestApp(QtGui.QMainWindow):
         self.mui.show()
         
     def execSQL(self):
-        
         #Loading UI
         self.rui = uic.loadUi('results.ui')
         
@@ -44,7 +43,9 @@ class TestApp(QtGui.QMainWindow):
         #Executing SQL
         cursor.execute(question)
         rows=cursor.fetchall()        
-        self.rui.label_2.setText('Executing SQL: '+question)
+        self.rui.textBrowser.append('<font color="darkblue">'+question)
+        self.rui.lcdNumber.display(len(rows))
+        self.rui.listWidget.setAlternatingRowColors(True)
         #Appending results to GUI
         for row in rows:
             answer=row
@@ -70,6 +71,7 @@ class TestApp(QtGui.QMainWindow):
 
             self.ui.label_5.setPixmap(QtGui.QPixmap('digraph.png'))
             self.ui.label_5.setScaledContents(True)
+            
         except:
             self.eui = uic.loadUi('error.ui')
             self.eui.show()
