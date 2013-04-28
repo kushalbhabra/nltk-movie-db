@@ -413,19 +413,27 @@ def formQuery(attach_it,rest,aggregation):
         else:
             query += elem + ' and '
             
+    ##Aggregation FIRST and LAST
     if aggregation!="" and (select=="movie.name" or select=="movie.year"):
-        query+=" ORDER by movie.year "+aggregation+" LIMIT 1"
+        query+=" ORDER by movie.year "+aggregation
         
         
     return query
 
 
 def getAgg(tokens):
-    for token in tokens:
+    limit = 1
+    for i,token in enumerate(tokens):
         if 'first' in token:
-            return 'ASC'
+            if (i+1)!=(len(tokens)-1):
+                if tokens[i+1].isdigit():
+                    limit=int(tokens[i+1])
+            return 'ASC LIMIT '+str(limit)
         elif 'last' in token:
-            return 'DESC'
+            if (i+1)!=(len(tokens)-1):
+                if tokens[i+1].isdigit():
+                    limit=int(tokens[i+1])
+            return 'DESC LIMIT '+str(limit)
     return ""
             
 ###############################################################
