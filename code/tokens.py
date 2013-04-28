@@ -526,7 +526,10 @@ def main():
 ##    query = 'Who directed the movie named "the titanic"?'
 ##    query = 'Who acted in the movies directed by James Franco ?'
 ##    query = 'Which movie had James Franco as actor and Steven Spliberg as director?'
-    query = 'Which movies had actors James Franco and Leonardo DeCaprio?'
+##    query = 'Which movies had actors James Franco and Leonardo DeCaprio?'
+## not working    query= 'Which actors did Bruce Willis work with in "The Sixth Sense"'
+## not working   query = 'When did Russel Crowe and Jennifer Conelly work together?'
+    query = "which movies did Bruce Willis and Toni Collette work in the year '99 ?"
     a = convert(query)
     print a['query']
     
