@@ -42,6 +42,11 @@ wh_struct = {'when':{'movie':['year'],
                       'actor':['name']}
              }
 
+genres=['Short', 'Documentary', 'Crime', 'Comedy', 'Western', 'Family','Animation', 
+        'Drama', 'Romance', 'Mystery', 'Thriller', 'Adult', 'Music', 'Action', 
+        'Fantasy', 'Sci-Fi', 'Horror', 'War', 'Musical', 'Adventure', 'Film-Noir']
+
+
 #Stores query
 query=''
 #Stores tokens of query
@@ -80,6 +85,7 @@ def getNamedEntity(text):
         text = text.replace(elem,"")
     return text,ret
 
+
 #Finds Year and returns query-year and year
 def getYearToken(text):
     tokenizer = RegexpTokenizer("[12][0-9][0-9][0-9]|(\'[0-9][0-9])")
@@ -99,6 +105,17 @@ def getYearToken(text):
         else:
             ret_tokens.append(t)
     return text,ret_tokens    
+
+def getGenreTokens(tokens):
+    ret=[]
+    for genre in genres:
+        for token in tokens:
+            if token.lower()==genre.lower():
+                ret.append(genre)
+    return ret
+
+
+    
 
 #Returns the dbelement for a token
 def detect(word):
@@ -316,7 +333,8 @@ def isExplicit(value, inlist,inkey):
                 return True
     return False
 
-def formQuery(attach_it,rest):
+def formQuery(attach_it,rest,aggregation):
+    print '\n*****************\n',attach_it,rest
     select = []
     db = []
     for key in rest[0].keys():
@@ -394,9 +412,22 @@ def formQuery(attach_it,rest):
             query += elem + ''
         else:
             query += elem + ' and '
+            
+    if aggregation!="" and (select=="movie.name" or select=="movie.year"):
+        query+=" ORDER by movie.year "+aggregation+" LIMIT 1"
+        
+        
     return query
 
 
+def getAgg(tokens):
+    for token in tokens:
+        if 'first' in token:
+            return 'ASC'
+        elif 'last' in token:
+            return 'DESC'
+    return ""
+            
 ###############################################################
 ##Full Conversion
 
@@ -412,20 +443,27 @@ def convert(question):
     womovie,movie = movie_name(query)
     woper,person = getNamedEntity(womovie)
     woyear,year = getYearToken(woper)
+    #genreTokens=getGenreTokens(word_tokens)
+    #print 'genre tokens: ',genreTokens
+    aggregation=getAgg(word_tokens)
+    
     print "\n Movie Person Year Tokens"
     print movie,person,year
     rest=tokenize_rest(woyear)
     attach_it,rest_list = finalize(movie,person,year,rest)
-    print '\n Final query' 
-    return {"query":formQuery(attach_it,rest_list),
+    print '\n Final query'
+    return {"query":formQuery(attach_it,rest_list,aggregation),
             "attach":attach_it,
             "rest":rest_list}
 
 def main():
-    query = 'Which movies were made in the year 2000?'
+    query = 'Which were the films released in 2000?'
+##    query = 'Which movies were made in the year 2000?'
 ##    query = 'Which movies have James Franco as actor?'
 ##    query = 'who directed movies having James Franco ?'
     ##query = 'Who directed the movie named "the titanic"?'
-    convert(query)
+    a = convert(query)
+    print a['query']
+    
     
 if __name__=="__main__":main()
