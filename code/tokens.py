@@ -1,5 +1,4 @@
 ## IMPORTING NECESAARY FILES
-
 import pickle # Loading Pickle attribute and relation file
 import re # Regular Expression for getting movie token e.g. "Titanic"
 import nltk 
@@ -9,7 +8,7 @@ from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.stem.lancaster import LancasterStemmer
 from stemming.porter2 import stem as stemmer
 from attach import * # Maxflow algorithm
-
+from Actor_Director import verifyPersonWithDb as verify
 #Relation Synonyms
 relation = {'actor':[],
             'director':[],
@@ -286,24 +285,26 @@ def act_direct(head):
 
 
 def checkwith(head):
-    send =False
-    sendvalue=''
-    for word in word_tokens:
-        if word[:3]=='act':
-            sendvalue='actor'
-            
-        if word[:6]=='direct':
-            sendvalue='director'
-
-        if word=='with':
-            send = True
-    if send:
-        return sendvalue
-    else:
+    values = verify(head)
+    if len(values)==2:
+        act_pos = 0
+        direct_pos = 0
         for word in word_tokens:
-            if word[:2]=='ha':
-                return 'actor'
-        return 'director'
+            if word[:2]=='act':
+                act_pos = word_tokens.index(word)
+            if word[:6]=='direct':
+                direct_pos = word_tokens.index(word)
+        name_pos = word_tokens.index(head.split()[0])
+        act_diff = abs(act_pos - name_pos)
+        direct_diff = abs(direct_pos - name_pos)
+        if act_diff < direct_diff:
+            return 'actor'
+        elif direct_diff < act_diff:
+            return 'director'
+        else:
+            return 'actor'
+    else:
+        return values[0]
 
 
 def canbeactor(head):
@@ -465,11 +466,12 @@ def convert(question):
             "rest":rest_list}
 
 def main():
-    query = 'Which were the films released in 2000?'
+##    query = 'Which were the films released in 2000?'
 ##    query = 'Which movies were made in the year 2000?'
 ##    query = 'Which movies have James Franco as actor?'
 ##    query = 'who directed movies having James Franco ?'
-    ##query = 'Who directed the movie named "the titanic"?'
+##    query = 'Who directed the movie named "the titanic"?'
+    query = "Who acted in the movies directed by James Franco ?"
     a = convert(query)
     print a['query']
     

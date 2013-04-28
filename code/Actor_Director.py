@@ -27,8 +27,6 @@ def verifyPersonWithDb(p):
         ret_tokens.append('director')
             
     conn.close()
-    print "Here"
-    print ret_tokens
     if ret_tokens:
         return ret_tokens
     else:
