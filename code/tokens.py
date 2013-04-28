@@ -261,12 +261,35 @@ def finalize(movie, person, year, rest):
             final_max_flow_list.append({'token':yr,'dbelement':yr,'use':'movie.year','explicit':isExplicit('movie.year',rest,'yr'),'attribute':'movie.year'})
     ##TAKING CARE OF PERSONS
     if person!=None:
+        actorNames=''
+        directorNames=''
         for head in person:
             rel = act_direct(head)
-            final_max_flow_list.append({'token':head,'dbelement':head,'use':rel+'.name','explicit':isExplicit(rel+'.name',rest,rel[:2]),'attribute':rel+'.name'})
+            if rel=='actor':
+                if actorNames == '':
+                    actorNames += head
+                else:
+                    actorNames += ':'+head
+            if rel=='director':
+                if directorNames == '':
+                    directorNames += head
+                else:
+                    directorNames += ':'+head
+        print 'actors : ',actorNames
+        print 'directors : ',directorNames
+                
+        if actorNames!='':
+            final_max_flow_list.append({'token':actorNames,'dbelement':actorNames,'use':'actor.name','explicit':isExplicit('actor.name',rest,'act'),'attribute':'actor.name'})
+        if directorNames!='':
+            final_max_flow_list.append({'token':directorNames,'dbelement':directorNames,'use':'director.name','explicit':isExplicit('director.name',rest,'direct'),'attribute':'director.name'})
+
+##        for head in person:
+##            rel = act_direct(head)
+##            final_max_flow_list.append({'token':head,'dbelement':head,'use':rel+'.name','explicit':isExplicit(rel+'.name',rest,rel[:3]),'attribute':rel+'.name'})
     print "\n Max Flow Input"
     print final_max_flow_list
     print "\n Query attribute value pair"
+    print "Maxflow"
     return attach(final_max_flow_list),rest
 
 #######################################################
@@ -422,20 +445,21 @@ def formQuery(attach_it,rest,aggregation):
     for elem in attach_it:
         # Hard coding... dangerous but karna padega for time being
         if ('director.name' in elem) or ('actor.name' in elem):
-            name = elem.split("=")[1]
-            spleet = name.split(" ")
-            if len(spleet)>1:
-                fname = spleet[0]
-                lname = spleet[-1]
-                if 'director' in elem:
-                    elem = " (director.first_name='%s' and director.last_name='%s') " % (fname,lname)
-                elif 'actor' in elem:
-                    elem = " (actor.first_name='%s' and actor.last_name='%s') " % (fname,lname)
-            else :
-                if 'director' in elem:
-                    elem = " (director.first_name='%s' or director.last_name='%s') " % (name,name)
-                elif 'actor' in elem:
-                    elem = " (actor.first_name='%s' or actor.last_name='%s') " % (name,name)
+            names = elem.split("=")[1]
+            for name in names.split(':'):
+                spleet = name.split(" ")
+                if len(spleet)>1:
+                    fname = spleet[0]
+                    lname = spleet[-1]
+                    if 'director' in elem:
+                        elem += " (director.first_name='%s' and director.last_name='%s') " % (fname,lname)
+                    elif 'actor' in elem:
+                        elem += " (actor.first_name='%s' and actor.last_name='%s') " % (fname,lname)
+                else :
+                    if 'director' in elem:
+                        elem += " (director.first_name='%s' or director.last_name='%s') " % (name,name)
+                    elif 'actor' in elem:
+                        elem += " (actor.first_name='%s' or actor.last_name='%s') " % (name,name)
                 
             
         if elem == attach_it[-1]:
@@ -501,7 +525,8 @@ def main():
 ##    query = 'who directed movies having James Franco ?'
 ##    query = 'Who directed the movie named "the titanic"?'
 ##    query = 'Who acted in the movies directed by James Franco ?'
-    query = 'Which movie had James Franco as actor and Steven Spliberg as director?'
+##    query = 'Which movie had James Franco as actor and Steven Spliberg as director?'
+    query = 'Which movies had actors James Franco and Leonardo DeCaprio?'
     a = convert(query)
     print a['query']
     

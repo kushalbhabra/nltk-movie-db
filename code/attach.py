@@ -80,6 +80,9 @@ def attach(tokenset):
         DGedges.append(("N"+elem,'e',1))
 ##DB-Attribute 2 to Implicit I
     implicit=list(set(attributes)-set(explicit))
+    print len(attributes)
+    print len(explicit)
+    print implicit
     for elem in implicit:
         g.add_edge("N"+elem,'i',1)
         DGedges.append(("N"+elem,'i',1))
